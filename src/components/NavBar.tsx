@@ -73,7 +73,7 @@ export const NavBar = () => {
           </svg>
         </a>
         {isSignedIn && (
-          <div className="flex justify-center p-4">
+          <div className="flex justify-center p-2">
             <UserButton
               appearance={{
                 elements: {
