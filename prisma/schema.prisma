@@ -1,8 +1,10 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
+
 generator client {
     provider = "prisma-client-js"
+    previewFeatures = ["jsonProtocol"]
 }
 
 datasource db {
@@ -15,4 +17,34 @@ model Example {
     id        String   @id @default(cuid())
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+}
+
+ enum Role {
+   USER
+   CREATOR
+ }
+
+model GroupMember{
+  id          String @id @default(cuid())
+
+  role        Role @default(USER)
+  joinedAt    DateTime @default(now())
+
+  userId      String
+  group       Group @relation(fields: [groupId], references: [id])
+  groupId     String
+
+  @@index([userId])
+  @@index([groupId])
+}
+
+model Group{
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+
+    name      String @db.VarChar(255)
+
+    members GroupMember[]
+
+    @@index([name])
 }
