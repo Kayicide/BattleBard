@@ -54,13 +54,11 @@ export const ExampleModal = (props: { isOpen: boolean; onClose: Function }) => {
                         as="h3"
                         className="text-base font-semibold leading-6 text-white"
                       >
-                        Deactivate account
+                        Create or Join Group
                       </Dialog.Title>
                       <div className="mt-2">
                         <p className="text-sm text-white">
-                          Are you sure you want to deactivate your account? All
-                          of your data will be permanently removed. This action
-                          cannot be undone.
+                          lol testing some text here!
                         </p>
                       </div>
                     </div>
@@ -69,10 +67,10 @@ export const ExampleModal = (props: { isOpen: boolean; onClose: Function }) => {
                 <div className="bg-gray-800/70 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                   <button
                     type="button"
-                    className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+                    className="inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
                     onClick={handleClose}
                   >
-                    Deactivate
+                    Join
                   </button>
                   <button
                     type="button"
