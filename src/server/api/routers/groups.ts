@@ -20,7 +20,7 @@ export const groupRouter = createTRPCRouter({
       });
     }),
   getByUserMembership: privateProcedure.query(async ({ ctx }) => {
-    let memberships = await ctx.prisma.groupMember.findMany({
+    const memberships = await ctx.prisma.groupMember.findMany({
       where: {
         userId: ctx.userId,
       },
