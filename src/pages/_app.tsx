@@ -6,10 +6,16 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { TopBar } from "~/components/TopBar";
 import { NavBar } from "~/components/NavBar";
 import { dark } from "@clerk/themes";
+import Head from "next/head";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
     <>
+      <Head>
+        <title>BattleBard</title>
+        <meta name="description" content="BattleBard: TTRPG Tool" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <ClerkProvider
         {...pageProps}
         appearance={{
