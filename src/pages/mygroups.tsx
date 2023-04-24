@@ -16,7 +16,10 @@ const MyGroups: NextPage = () => {
 
   const handleOpenModal = () => {
     setNewGroupOpen(true);
-    console.log("test");
+  };
+
+  const handleCloseModal = () => {
+    setNewGroupOpen(false);
   };
 
   return (
@@ -38,7 +41,10 @@ const MyGroups: NextPage = () => {
           <GroupSquare {...group} key={group.id} />
         ))}
       </div>
-      <ExampleModal isOpen={newGroupOpen}></ExampleModal>
+      <ExampleModal
+        isOpen={newGroupOpen}
+        onClose={handleCloseModal}
+      ></ExampleModal>
     </div>
   );
 };

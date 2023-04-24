@@ -10,7 +10,6 @@ const Home: NextPage = () => {
     <>
       <div>
         <h1>Home</h1>
-        <ExampleModal isOpen={false}></ExampleModal>
       </div>
     </>
   );

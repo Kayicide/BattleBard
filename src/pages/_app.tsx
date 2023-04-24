@@ -2,13 +2,26 @@ import "~/styles/globals.css";
 import { type AppType } from "next/app";
 import { api } from "~/utils/api";
 import { Analytics } from "@vercel/analytics/react";
-import { ClerkProvider } from "@clerk/nextjs";
+import {
+  ClerkProvider,
+  RedirectToSignIn,
+  SignedIn,
+  SignedOut,
+} from "@clerk/nextjs";
 import { TopBar } from "~/components/TopBar";
 import { NavBar } from "~/components/NavBar";
 import { dark } from "@clerk/themes";
 import Head from "next/head";
+import { useRouter } from "next/router";
+
+const publicPages = ["/sign-in/[[...index]]", "/sign-up/[[...index]]", "/"];
 
 const MyApp: AppType = ({ Component, pageProps }) => {
+  const { pathname } = useRouter();
+
+  // Check if the current route matches a public page
+  const isPublicPage = publicPages.includes(pathname);
+
   return (
     <>
       <Head>
@@ -27,7 +40,18 @@ const MyApp: AppType = ({ Component, pageProps }) => {
             <NavBar />
             <div className="mx-3 flex-1 sm:px-0 sm:pt-0 lg:mx-0 lg:p-6">
               <TopBar />
-              <Component {...pageProps} />
+              {isPublicPage ? (
+                <Component {...pageProps} />
+              ) : (
+                <>
+                  <SignedIn>
+                    <Component {...pageProps} />
+                  </SignedIn>
+                  <SignedOut>
+                    <RedirectToSignIn />
+                  </SignedOut>
+                </>
+              )}
             </div>
           </div>
         </div>
