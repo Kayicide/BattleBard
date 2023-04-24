@@ -2,7 +2,7 @@ import { NextPage } from "next";
 import { useState } from "react";
 import { GroupSquare } from "~/components/groupsquare";
 import { LoadingPage } from "~/components/loading";
-import { ExampleModal } from "~/components/modal";
+import { CreateGroupModal } from "~/components/modals/modal";
 import { api } from "~/utils/api";
 import { PlusSmallIcon } from "@heroicons/react/20/solid";
 
@@ -41,10 +41,10 @@ const MyGroups: NextPage = () => {
           <GroupSquare {...group} key={group.id} />
         ))}
       </div>
-      <ExampleModal
+      <CreateGroupModal
         isOpen={newGroupOpen}
         onClose={handleCloseModal}
-      ></ExampleModal>
+      ></CreateGroupModal>
     </div>
   );
 };

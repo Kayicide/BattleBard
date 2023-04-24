@@ -3,7 +3,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 
 type CloseHandler = () => void;
-export const ExampleModal = (props: {
+export const CreateGroupModal = (props: {
   isOpen: boolean;
   onClose: CloseHandler;
 }) => {
