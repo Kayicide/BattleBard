@@ -4,28 +4,13 @@ import type { NextRequest } from "next/server";
 
 const publicPaths = ["/", "/sign-in*", "/sign-up*", "/api/trpc/example*"];
 
-const isPublic = (path: string) => {
-  return publicPaths.find((x) =>
-    path.match(new RegExp(`^${x}$`.replace("*$", "($|/|\\.)")))
-  );
-};
+// const isPublic = (path: string) => {
+//   return publicPaths.find((x) =>
+//     path.match(new RegExp(`^${x}$`.replace("*$", "($|/|\\.)")))
+//   );
+// };
 
-export default withClerkMiddleware((request: NextRequest) => {
-  if (isPublic(request.nextUrl.pathname)) {
-    return NextResponse.next();
-  }
-
-  // if the user is not signed in redirect them to the sign in page.
-  const { userId } = getAuth(request);
-
-  if (!userId) {
-    // redirect the users to /pages/sign-in/[[...index]].ts
-
-    const signInUrl = new URL("/sign-in", request.url);
-    signInUrl.searchParams.set("redirect_url", request.url);
-    return NextResponse.redirect(signInUrl);
-  }
-
+export default withClerkMiddleware(() => {
   return NextResponse.next();
 });
 
