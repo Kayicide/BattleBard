@@ -8,7 +8,11 @@ import {
 
 export const groupRouter = createTRPCRouter({
   getAll: privateProcedure.query(({ ctx }) => {
-    return ctx.prisma.group.findMany();
+    return ctx.prisma.group.findMany({
+      include: {
+        members: true,
+      },
+    });
   }),
   get: publicProcedure
     .input(z.object({ groupId: z.string() }))
@@ -25,7 +29,11 @@ export const groupRouter = createTRPCRouter({
         userId: ctx.userId,
       },
       include: {
-        group: true,
+        group: {
+          include: {
+            members: true,
+          },
+        },
       },
     });
     return memberships;
