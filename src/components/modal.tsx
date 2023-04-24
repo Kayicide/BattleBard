@@ -2,7 +2,11 @@ import { Fragment, useEffect, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 
-export const ExampleModal = (props: { isOpen: boolean; onClose: Function }) => {
+type CloseHandler = () => void;
+export const ExampleModal = (props: {
+  isOpen: boolean;
+  onClose: CloseHandler;
+}) => {
   const [open, setOpen] = useState(props.isOpen);
   const cancelButtonRef = useRef(null);
 
