@@ -33,8 +33,8 @@ export default withClerkMiddleware(async (request: NextRequest) => {
   }
 
   if (isAdmin(request.nextUrl.pathname)) {
-    let user = await clerkClient.users.getUser(userId);
-    let role = user.publicMetadata.Role;
+    const user = await clerkClient.users.getUser(userId);
+    const role = user.publicMetadata.Role;
     if (role !== "Admin") {
       return NextResponse.redirect(new URL("/", request.url));
     }
