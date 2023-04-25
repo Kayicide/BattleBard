@@ -36,6 +36,27 @@ export const groupRouter = createTRPCRouter({
         },
       },
     });
+
     return memberships;
   }),
+  create: privateProcedure
+    .input(
+      z.object({
+        name: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      let group = await ctx.prisma.group.create({
+        data: {
+          name: input.name,
+        },
+      });
+
+      await ctx.prisma.groupMember.create({
+        data: {
+          userId: ctx.userId,
+          groupId: group.id,
+        },
+      });
+    }),
 });

@@ -18,6 +18,8 @@ import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 
 import { prisma } from "~/server/db";
 
+import { clerkClient } from "@clerk/nextjs/server";
+
 /**
  * This helper generates the "internals" for a tRPC context. If you need to use it, you can export
  * it from here.
@@ -28,14 +30,27 @@ import { prisma } from "~/server/db";
  *
  * @see https://create.t3.gg/en/usage/trpc#-serverapitrpcts
  */
-export const createTRPCContext = (opts: CreateNextContextOptions) => {
+export const createTRPCContext = async (opts: CreateNextContextOptions) => {
   const { req } = opts;
   const sesh = getAuth(req);
   const userId = sesh.userId;
 
+  let role: string = "";
+  if (userId) {
+    let user = await clerkClient.users.getUser(userId);
+    let roleOrDefault = user.publicMetadata.Role as string;
+
+    if (roleOrDefault === undefined) {
+      role = "Member";
+    } else {
+      role = roleOrDefault;
+    }
+  }
+
   return {
     prisma,
     userId,
+    role,
   };
 };
 /**
@@ -104,4 +119,25 @@ const enforceUserIsAuthed = t.middleware(async ({ ctx, next }) => {
   });
 });
 
+const enforceUserIsAuthedAndAdmin = t.middleware(async ({ ctx, next }) => {
+  if (!ctx.userId) {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+    });
+  }
+
+  if (ctx.role !== "Admin") {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+    });
+  }
+
+  return next({
+    ctx: {
+      userId: ctx.userId,
+    },
+  });
+});
+
 export const privateProcedure = t.procedure.use(enforceUserIsAuthed);
+export const adminProcedure = t.procedure.use(enforceUserIsAuthedAndAdmin);
