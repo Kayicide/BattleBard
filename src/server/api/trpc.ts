@@ -35,10 +35,10 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
   const sesh = getAuth(req);
   const userId = sesh.userId;
 
-  let role: string = "";
+  let role = "";
   if (userId) {
-    let user = await clerkClient.users.getUser(userId);
-    let roleOrDefault = user.publicMetadata.Role as string;
+    const user = await clerkClient.users.getUser(userId);
+    const roleOrDefault = user.publicMetadata.Role as string;
 
     if (roleOrDefault === undefined) {
       role = "Member";
