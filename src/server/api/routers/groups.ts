@@ -1,6 +1,8 @@
+import { Role } from "@prisma/client";
 import { z } from "zod";
 
 import {
+  adminProcedure,
   createTRPCRouter,
   privateProcedure,
   publicProcedure,
@@ -52,11 +54,50 @@ export const groupRouter = createTRPCRouter({
         },
       });
 
-      await ctx.prisma.groupMember.create({
+      return await ctx.prisma.groupMember.create({
         data: {
           userId: ctx.userId,
           groupId: group.id,
+          role: Role.CREATOR
         },
       });
     }),
+    addUserToGroup: adminProcedure.input(z.object({
+      userId: z.string(),
+      groupId: z.string()
+    })).mutation(async ({ctx, input}) => {
+      return await ctx.prisma.groupMember.create({
+        data: {
+          userId: input.userId, 
+          groupId: input.groupId,
+          role: Role.USER
+        }, 
+        include: {
+          group: {
+            include: {
+              members: true,
+            },
+          },
+        },
+      })
+    }), 
+    joinGroup: privateProcedure.input(z.object({
+      groupId: z.string()
+    })).mutation(async ({ctx, input}) => {
+      return await ctx.prisma.groupMember.create({
+        data: {
+          userId: ctx.userId, 
+          groupId: input.groupId,
+          role: Role.USER
+        }, 
+        include: {
+          group: {
+            include: {
+              members: true,
+            },
+          },
+        },
+      })
+    })
+
 });
