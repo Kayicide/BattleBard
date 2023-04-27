@@ -2,6 +2,7 @@ import { SignIn, UserButton, useClerk, useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { CodeBracketSquareIcon } from "@heroicons/react/20/solid";
 
 export const NavBar = () => {
   const { isLoaded: userLoaded, isSignedIn, user } = useUser();
@@ -82,9 +83,9 @@ export const NavBar = () => {
         {userSignedInAndAdmin && (
           <Link
           className="smooth-hover inline-flex justify-center rounded-md p-4 text-white/50 hover:bg-gray-800 hover:text-white"
-          href="#"
+          href="/admin/dashboard"
           >
-            
+            <CodeBracketSquareIcon className="h-5 w-5 sm:h-6 sm:w-6"></CodeBracketSquareIcon>
           </Link>
         )}
         <Link
