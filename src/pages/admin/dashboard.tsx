@@ -90,7 +90,7 @@ const CreateGroup = () => {
         }}
         disabled={isCreatingGroup}
         type="button"
-        className="mb-2 mt-4 rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 dark:bg-blue-600 dark:hover:bg-blue-700"
+        className="mb-2 mt-4 rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white focus:outline-none focus:ring-4 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700"
       >
         Create Group Test
       </button>
@@ -154,7 +154,7 @@ const AddUserToGroup = () => {
         }}
         disabled={isAddingUserToGroup}
         type="button"
-        className="mb-2 mt-4 rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 dark:bg-blue-600 dark:hover:bg-blue-700"
+        className="mb-2 mt-4 rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white focus:outline-none focus:ring-4 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700"
       >
         Add User to Group
       </button>
@@ -164,7 +164,7 @@ const AddUserToGroup = () => {
 
 const Dashboard: NextPage = () => {
   return (
-    <div>
+    <div className="h-full">
       <h1 className="pb-4">Dashboard</h1>
       <div className="flex flex-row">
         <div className="flex w-4/12 flex-col p-4">
@@ -174,7 +174,9 @@ const Dashboard: NextPage = () => {
         </div>
         <div className="flex w-4/12 flex-col p-4">
           <h1>All Users:</h1>
-          <AllUsers></AllUsers>
+          <div className="h-full overflow-auto">
+            <AllUsers></AllUsers>
+          </div>
         </div>
       </div>
     </div>

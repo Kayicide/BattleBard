@@ -35,17 +35,19 @@ const MyApp: AppType = ({ Component, pageProps }) => {
           baseTheme: dark,
         }}
       >
-        <div className="over flex min-h-screen bg-orange-600">
+        <div className="over flex max-h-screen min-h-screen bg-orange-600">
           <div className="lg:rounded-layout-reset flex flex-1 flex-col space-y-5 bg-gray-800 sm:mt-1 sm:rounded-t-xl sm:p-6 lg:ml-1 lg:flex-row lg:space-x-5 lg:space-y-0 lg:rounded-tl-xl lg:pb-0 lg:pl-0 lg:pr-0 lg:pt-0">
             <NavBar />
-            <div className="scroll mx-3 flex-1 overflow-y-hidden sm:px-0 sm:pt-0 lg:mx-0 lg:p-6">
+            <div className="scroll mx-3 flex-1 sm:px-0 sm:pt-0 lg:mx-0 lg:p-6">
               <TopBar />
               {isPublicPage ? (
                 <Component {...pageProps} />
               ) : (
                 <>
                   <SignedIn>
-                    <Component {...pageProps} />
+                    <div className="scrollbar-track-rounded-full h-full overflow-auto scrollbar scrollbar-track-gray-800 scrollbar-thumb-gray-900">
+                      <Component {...pageProps} />
+                    </div>
                   </SignedIn>
                   <SignedOut>
                     <RedirectToSignIn />
