@@ -23,7 +23,7 @@ const MyGroups: NextPage = () => {
   };
 
   return (
-    <div>
+    <div className="h-full">
       <h1>Groups</h1>
       <div className="mb-10 mt-10 grid grid-cols-1 gap-4 sm:mb-0 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         <button
