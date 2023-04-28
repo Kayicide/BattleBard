@@ -9,6 +9,27 @@ import {
 } from "~/server/api/trpc";
 
 export const groupRouter = createTRPCRouter({
+    create: privateProcedure
+    .input(
+      z.object({
+        name: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const group = await ctx.prisma.group.create({
+        data: {
+          name: input.name,
+        },
+      });
+
+      return await ctx.prisma.groupMember.create({
+        data: {
+          userId: ctx.userId,
+          groupId: group.id,
+          role: Role.CREATOR
+        },
+      });
+    }),
   getAll: privateProcedure.query(({ ctx }) => {
     return ctx.prisma.group.findMany({
       include: {
@@ -41,27 +62,6 @@ export const groupRouter = createTRPCRouter({
 
     return memberships;
   }),
-  create: privateProcedure
-    .input(
-      z.object({
-        name: z.string(),
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      const group = await ctx.prisma.group.create({
-        data: {
-          name: input.name,
-        },
-      });
-
-      return await ctx.prisma.groupMember.create({
-        data: {
-          userId: ctx.userId,
-          groupId: group.id,
-          role: Role.CREATOR
-        },
-      });
-    }),
     addUserToGroup: adminProcedure.input(z.object({
       userId: z.string(),
       groupId: z.string()
