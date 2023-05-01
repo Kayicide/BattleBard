@@ -19,7 +19,7 @@ const isAdminPath = (path: string) => {
   );
 };
 
-export default withClerkMiddleware(async (request: NextRequest) => {
+export default withClerkMiddleware((request: NextRequest) => {
   if (isPublic(request.nextUrl.pathname)) {
     return NextResponse.next();
   }
