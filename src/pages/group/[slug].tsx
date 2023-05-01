@@ -1,11 +1,12 @@
 import type { GetStaticProps, NextPage } from "next";
+import { LoadingPage } from "~/components/loading";
 import { generateSSGHelper } from "~/server/helpers/ssgHelper";
 import { api } from "~/utils/api";
 
 const Group: NextPage<{ groupId: string }> = ({ groupId }) => {
   const { data, isLoading } = api.groups.get.useQuery({ groupId });
   if (isLoading) {
-    console.log("isloading?");
+    return <LoadingPage></LoadingPage>;
   }
 
   if (!data) {
