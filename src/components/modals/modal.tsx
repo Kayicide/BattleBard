@@ -39,7 +39,7 @@ export const CreateGroupModal = (props: {
         </Transition.Child>
 
         <div className="fixed inset-0 z-10 overflow-y-auto">
-          <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+          <div className="flex min-h-full grow items-end justify-center p-4 text-center sm:items-center sm:p-0">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -51,19 +51,50 @@ export const CreateGroupModal = (props: {
             >
               <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-gray-800/70 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
                 <div className="bg-gray-800/70 px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                  <div className="sm:flex sm:items-start">
-                    <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                      <Dialog.Title
-                        as="h3"
-                        className="text-base font-semibold leading-6 text-white"
-                      >
-                        Create or Join Group
-                      </Dialog.Title>
-                      <div className="mt-2">
-                        <p className="text-sm text-white">
-                          lol testing some text here!
-                        </p>
+                  <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                    <Dialog.Title
+                      as="h1"
+                      className="pb-8 text-center text-4xl font-semibold leading-6 text-white"
+                    >
+                      Create or Join Group
+                    </Dialog.Title>
+
+                    <div className="flex flex-row">
+                      <div className="relative mr-2 mt-2 grow rounded-md shadow-sm sm:mr-8">
+                        <input
+                          type="text"
+                          name="GroupName"
+                          id="GroupName"
+                          placeholder="Group Name..."
+                          className=" block w-full rounded-md border-0 py-1.5 pl-4 pr-4 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        />
                       </div>
+                      <button
+                        type="button"
+                        disabled={true}
+                        className=" mt-2 grow-0 rounded-lg bg-blue-700 px-5 py-1.5 text-sm font-medium text-white focus:outline-none focus:ring-4 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700"
+                      >
+                        Create
+                      </button>
+                    </div>
+                    <hr className="my-4 bg-white"></hr>
+                    <div className="flex flex-row">
+                      <div className="relative mr-2 mt-2 grow rounded-md shadow-sm sm:mr-8">
+                        <input
+                          type="text"
+                          name="InviteCode"
+                          id="InviteCode"
+                          placeholder="Invite Code..."
+                          className=" block w-full rounded-md border-0 py-1.5 pl-4 pr-4 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        disabled={true}
+                        className=" mt-2 grow-0 rounded-lg bg-blue-700 px-7 py-1.5 text-sm font-medium text-white focus:outline-none focus:ring-4 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700"
+                      >
+                        Join
+                      </button>
                     </div>
                   </div>
                 </div>

@@ -6,7 +6,8 @@ export default {
     extend: {},
   },
   plugins: [
-    require('tailwind-scrollbar')
+    require('tailwind-scrollbar'),
+    require('tailwindcss-debug-screens')
   ],
     variants: {
         scrollbar: ['rounded']
