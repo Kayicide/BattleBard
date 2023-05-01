@@ -3,7 +3,7 @@ import { LoadingPage } from "~/components/loading";
 import { generateSSGHelper } from "~/server/helpers/ssgHelper";
 import { api } from "~/utils/api";
 import { useRouter } from "next/router";
-import { useAuth, useSession, useUser } from "@clerk/nextjs";
+import { useAuth } from "@clerk/nextjs";
 
 const JoinByInvitePage: NextPage<{ invite: string }> = ({ invite }) => {
   const router = useRouter();
@@ -27,8 +27,6 @@ const JoinByInvitePage: NextPage<{ invite: string }> = ({ invite }) => {
   if (!data) {
     return <h1 className="text-4xl text-red-500">Invalid Invite!</h1>;
   }
-
-  console.log("hmm? ", data.members.filter((x) => x.userId === userId).length);
 
   const alreadyMember =
     data.members.filter((x) => x.userId === userId).length > 0;
