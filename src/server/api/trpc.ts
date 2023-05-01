@@ -15,10 +15,7 @@
  * These allow you to access things when processing a request, like the database, the session, etc.
  */
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
-
 import { prisma } from "~/server/db";
-
-import { clerkClient } from "@clerk/nextjs/server";
 
 /**
  * This helper generates the "internals" for a tRPC context. If you need to use it, you can export
@@ -30,7 +27,7 @@ import { clerkClient } from "@clerk/nextjs/server";
  *
  * @see https://create.t3.gg/en/usage/trpc#-serverapitrpcts
  */
-export const createTRPCContext = async (opts: CreateNextContextOptions) => {
+export const createTRPCContext = (opts: CreateNextContextOptions) => {
   const { req } = opts;
   const sesh = getAuth(req);
   const userId = sesh.userId;
