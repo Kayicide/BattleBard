@@ -9,7 +9,7 @@ import {
 } from "~/server/api/trpc";
 
 export const groupRouter = createTRPCRouter({
-    create: privateProcedure
+  create: privateProcedure
     .input(
       z.object({
         name: z.string(),
@@ -19,6 +19,7 @@ export const groupRouter = createTRPCRouter({
       const group = await ctx.prisma.group.create({
         data: {
           name: input.name,
+          invite: createInviteString(),
         },
       });
 
@@ -26,7 +27,7 @@ export const groupRouter = createTRPCRouter({
         data: {
           userId: ctx.userId,
           groupId: group.id,
-          role: Role.CREATOR
+          role: Role.CREATOR,
         },
       });
     }),
@@ -62,16 +63,20 @@ export const groupRouter = createTRPCRouter({
 
     return memberships;
   }),
-    addUserToGroup: adminProcedure.input(z.object({
-      userId: z.string(),
-      groupId: z.string()
-    })).mutation(async ({ctx, input}) => {
+  addUserToGroup: adminProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+        groupId: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
       return await ctx.prisma.groupMember.create({
         data: {
-          userId: input.userId, 
+          userId: input.userId,
           groupId: input.groupId,
-          role: Role.USER
-        }, 
+          role: Role.USER,
+        },
         include: {
           group: {
             include: {
@@ -79,17 +84,21 @@ export const groupRouter = createTRPCRouter({
             },
           },
         },
+      });
+    }),
+  joinGroupById: privateProcedure
+    .input(
+      z.object({
+        groupId: z.string(),
       })
-    }), 
-    joinGroup: privateProcedure.input(z.object({
-      groupId: z.string()
-    })).mutation(async ({ctx, input}) => {
+    )
+    .mutation(async ({ ctx, input }) => {
       return await ctx.prisma.groupMember.create({
         data: {
-          userId: ctx.userId, 
+          userId: ctx.userId,
           groupId: input.groupId,
-          role: Role.USER
-        }, 
+          role: Role.USER,
+        },
         include: {
           group: {
             include: {
@@ -97,7 +106,60 @@ export const groupRouter = createTRPCRouter({
             },
           },
         },
+      });
+    }),
+  joinGroupByInvite: privateProcedure
+    .input(
+      z.object({
+        invite: z.string(),
       })
-    })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const group = await ctx.prisma.group.findFirst({
+        where: {
+          invite: input.invite,
+        },
+      });
 
+      if (!group) {
+        return null;
+      }
+
+      const possibleMembership = await ctx.prisma.groupMember.findFirst({
+        where: {
+          userId: ctx.userId,
+          groupId: group.id,
+        },
+      });
+
+      if (possibleMembership !== null) {
+        return null;
+      }
+
+      return await ctx.prisma.groupMember.create({
+        data: {
+          userId: ctx.userId,
+          groupId: group.id,
+          role: Role.USER,
+        },
+        include: {
+          group: {
+            include: {
+              members: true,
+            },
+          },
+        },
+      });
+    }),
 });
+
+const createInviteString = () => {
+  let outString = "";
+  const inOptions = "abcdefghijklmnopqrstuvwxyz0123456789";
+
+  for (let i = 0; i < 6; i++) {
+    outString += inOptions.charAt(Math.floor(Math.random() * inOptions.length));
+  }
+
+  return outString;
+};
