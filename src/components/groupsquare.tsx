@@ -1,5 +1,5 @@
 import type { RouterOutputs } from "~/utils/api";
-import Image from 'next/image'
+import Image from "next/image";
 
 type Group = RouterOutputs["groups"]["getAll"][number];
 export const GroupSquare = (group: Group) => {
@@ -19,7 +19,7 @@ export const GroupSquare = (group: Group) => {
       {group.members.length === 1 && (
         <p className="text-white/50">{group.members.length} Member</p>
       )}
-      {group.members.length < 1 && (
+      {group.members.length > 1 && (
         <p className="text-white/50">{group.members.length} Members</p>
       )}
     </div>

@@ -43,7 +43,7 @@ model Group{
     createdAt DateTime @default(now())
 
     name      String   @db.VarChar(255)
-    invite    String?  @db.VarChar(255)
+    invite    String  @db.VarChar(255)
 
     members GroupMember[]
     characters Character[]
