@@ -168,15 +168,15 @@ const Dashboard: NextPage = () => {
       <h1 className="pb-4">Dashboard</h1>
       <div className="flex flex-row">
         <div className="flex w-4/12 flex-col p-4">
-          <CreateGroup></CreateGroup>
-          <hr className="my-4 bg-white"></hr>
-          <AddUserToGroup></AddUserToGroup>
-        </div>
-        <div className="flex w-4/12 flex-col p-4">
           <h1>All Users:</h1>
           <div className="h-full overflow-auto">
             <AllUsers></AllUsers>
           </div>
+        </div>
+        <div className="flex w-4/12 flex-col p-4">
+          <CreateGroup></CreateGroup>
+          <hr className="my-4 bg-white"></hr>
+          <AddUserToGroup></AddUserToGroup>
         </div>
       </div>
     </div>

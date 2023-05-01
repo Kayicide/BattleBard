@@ -1,10 +1,8 @@
-import {
-  clerkClient,
-  getAuth,
-  withClerkMiddleware,
-} from "@clerk/nextjs/server";
+import { getAuth, withClerkMiddleware } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+
+export type MetaData = { Role: string };
 
 const publicPaths = ["/", "/sign-in*", "/sign-up*", "/api/trpc/example*"];
 const adminPaths = ["/admin*"];
@@ -15,7 +13,7 @@ const isPublic = (path: string) => {
   );
 };
 
-const isAdmin = (path: string) => {
+const isAdminPath = (path: string) => {
   return adminPaths.find((x) =>
     path.match(new RegExp(`^${x}$`.replace("*$", "($|/|\\.)")))
   );
@@ -26,15 +24,14 @@ export default withClerkMiddleware(async (request: NextRequest) => {
     return NextResponse.next();
   }
 
-  const { userId } = getAuth(request);
+  const { userId, sessionClaims } = getAuth(request);
 
-  if (!userId) {
+  if (!userId || !sessionClaims) {
     return NextResponse.redirect("/");
   }
 
-  if (isAdmin(request.nextUrl.pathname)) {
-    const user = await clerkClient.users.getUser(userId);
-    const role = user.publicMetadata.Role;
+  if (isAdminPath(request.nextUrl.pathname)) {
+    const role = (sessionClaims.meta_data as MetaData).Role;
     if (role !== "Admin") {
       return NextResponse.redirect(new URL("/", request.url));
     }
@@ -45,14 +42,5 @@ export default withClerkMiddleware(async (request: NextRequest) => {
 
 // Stop Middleware running on static files
 export const config = {
-  matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - _next
-     * - static (static files)
-     * - favicon.ico (favicon file)
-     */
-    "/(.*?trpc.*?|(?!static|.*\\..*|_next|favicon.ico).*)",
-    "/",
-  ],
+  matcher: ["/(.*?trpc.*?|(?!static|.*\\..*|_next|favicon.ico).*)", "/"],
 };
