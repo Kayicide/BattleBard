@@ -36,9 +36,8 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
   const userId = sesh.userId;
 
   let role = "";
-  if (userId) {
-    const user = await clerkClient.users.getUser(userId);
-    const roleOrDefault = user.publicMetadata.Role as string;
+  if (userId && sesh) {
+    const roleOrDefault = (sesh.sessionClaims.meta_data as MetaData).Role;
 
     if (roleOrDefault === undefined) {
       role = "Member";
@@ -64,6 +63,7 @@ import { TRPCError, initTRPC } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 import { getAuth } from "@clerk/nextjs/server";
+import { MetaData } from "~/middleware";
 
 const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,
