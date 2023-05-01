@@ -45,6 +45,9 @@ export const groupRouter = createTRPCRouter({
         where: {
           id: input.groupId,
         },
+        include: {
+          members: true,
+        },
       });
     }),
   getByUserMembership: privateProcedure.query(async ({ ctx }) => {
@@ -63,6 +66,18 @@ export const groupRouter = createTRPCRouter({
 
     return memberships;
   }),
+  getByInvite: publicProcedure
+    .input(z.object({ invite: z.string() }))
+    .query(({ input, ctx }) => {
+      return ctx.prisma.group.findFirst({
+        where: {
+          invite: input.invite,
+        },
+        include: {
+          members: true,
+        },
+      });
+    }),
   addUserToGroup: adminProcedure
     .input(
       z.object({

@@ -1,10 +1,14 @@
 import type { RouterOutputs } from "~/utils/api";
 import Image from "next/image";
+import Link from "next/link";
 
 type Group = RouterOutputs["groups"]["getAll"][number];
 export const GroupSquare = (group: Group) => {
   return (
-    <div className="hover:smooth-hover group relative flex cursor-pointer flex-col items-center space-y-2 rounded-md bg-gray-900 px-4 py-10 hover:bg-gray-900/80 sm:py-20">
+    <Link
+      className="hover:smooth-hover group relative flex cursor-pointer flex-col items-center space-y-2 rounded-md bg-gray-900 px-4 py-10 hover:bg-gray-900/80 sm:py-20"
+      href={"/group/" + group.id}
+    >
       <Image
         width={80}
         height={80}
@@ -22,6 +26,6 @@ export const GroupSquare = (group: Group) => {
       {group.members.length > 1 && (
         <p className="text-white/50">{group.members.length} Members</p>
       )}
-    </div>
+    </Link>
   );
 };
