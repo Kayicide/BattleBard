@@ -1,5 +1,8 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
+import { api } from "~/utils/api";
+import router from "next/router";
+import { NextResponse } from "next/server";
 
 type CloseHandler = () => void;
 export const CreateGroupModal = (props: {
@@ -8,15 +11,43 @@ export const CreateGroupModal = (props: {
 }) => {
   const [open, setOpen] = useState(props.isOpen);
   const cancelButtonRef = useRef(null);
-
-  const handleClose = () => {
-    setOpen(false);
-    props.onClose();
-  };
+  const [invite, setInvite] = useState("");
+  const [name, setName] = useState("");
 
   useEffect(() => {
     setOpen(props.isOpen);
   }, [props.isOpen]);
+
+  const handleClose = () => {
+    console.log("close?");
+    setOpen(false);
+    props.onClose();
+  };
+
+  const { mutate: joinGroup } = api.groups.joinGroupByInvite.useMutation({
+    onSuccess: (group) => {
+      if (group) {
+        handleClose();
+        void router.push("/group/" + group.groupId);
+      }
+    },
+    onError: () => {
+      alert("Error Joining Group");
+    },
+  });
+
+  const { mutate: createGroup } = api.groups.create.useMutation({
+    onSuccess: (group) => {
+      console.log("lol?", group);
+      if (group) {
+        handleClose();
+        void router.push("/group/" + group.groupId);
+      }
+    },
+    onError: () => {
+      alert("Error Creating Group");
+    },
+  });
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -66,12 +97,17 @@ export const CreateGroupModal = (props: {
                           name="GroupName"
                           id="GroupName"
                           placeholder="Group Name..."
+                          onChange={(e) => {
+                            setName(e.target.value);
+                          }}
                           className=" block w-full rounded-md border-0 py-1.5 pl-4 pr-4 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         />
                       </div>
                       <button
                         type="button"
-                        disabled={true}
+                        onClick={() => {
+                          createGroup({ name });
+                        }}
                         className=" mt-2 grow-0 rounded-lg bg-blue-700 px-5 py-1.5 text-sm font-medium text-white focus:outline-none focus:ring-4 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700"
                       >
                         Create
@@ -85,12 +121,18 @@ export const CreateGroupModal = (props: {
                           name="InviteCode"
                           id="InviteCode"
                           placeholder="Invite Code..."
+                          onChange={(e) => {
+                            setInvite(e.target.value);
+                          }}
                           className=" block w-full rounded-md border-0 py-1.5 pl-4 pr-4 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         />
                       </div>
                       <button
                         type="button"
                         disabled={true}
+                        onClick={() => {
+                          joinGroup({ invite });
+                        }}
                         className=" mt-2 grow-0 rounded-lg bg-blue-700 px-7 py-1.5 text-sm font-medium text-white focus:outline-none focus:ring-4 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700"
                       >
                         Join
